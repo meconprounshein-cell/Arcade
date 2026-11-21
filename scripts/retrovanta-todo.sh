@@ -24,7 +24,7 @@ DEST="diagnosticos-publicos/retrovanta-resumen-$(date +%Y%m%d-%H%M%S).txt"
  echo "Arquitectura: $(uname -m)"
  echo "Kernel: $(uname -r)"
  if [ -r /proc/device-tree/model ]; then
-   printf 'Placa: '; tr -d '\\000\\n' </proc/device-tree/model; printf '\\n'
+   printf 'Placa: '; tr -d '\000\n' </proc/device-tree/model; printf '\n'
  fi
  if [ -r /etc/os-release ]; then
    . /etc/os-release
@@ -34,12 +34,12 @@ DEST="diagnosticos-publicos/retrovanta-resumen-$(date +%Y%m%d-%H%M%S).txt"
  echo "Espacio libre de raiz (MiB): $(df -Pm / | awk 'NR==2 {print $4}')"
  echo "Emuladores/Frontend detectados:"
  for exe in emulationstation retroarch mame4all pifba fba2x advmame pcsx-rearmed mupen64plus fceux picodrive snes9x; do
-  command -v "$exe" >/dev/null 2>&1 && printf '  %s\\n' "$exe" || true
+  command -v "$exe" >/dev/null 2>&1 && printf '  %s\n' "$exe" || true
  done
  for d in /opt/retropie/emulators /opt/retropie/libretrocores; do
    if [ -d "$d" ]; then
-     printf 'Componentes instalados en %s:\\n' "$d"
-     find "$d" -mindepth 1 -maxdepth 1 -type d -printf '  %f\\n' 2>/dev/null | sort || true
+     printf 'Componentes instalados en %s:\n' "$d"
+     find "$d" -mindepth 1 -maxdepth 1 -type d -printf '  %f\n' 2>/dev/null | sort || true
    fi
  done
  if [ -f "$REPORT/sistemas.txt" ]; then
@@ -51,7 +51,7 @@ DEST="diagnosticos-publicos/retrovanta-resumen-$(date +%Y%m%d-%H%M%S).txt"
  fi
  for d in /home/pi/.emulationstation/downloaded_images /home/pi/.emulationstation/gamelists /home/pi/RetroPie/roms; do
   if [ -d "$d" ]; then
-    echo "Cantidad de capturas en categoria $(basename "$d"): $(find "$d" -type f \\( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \\) 2>/dev/null | wc -l)"
+    echo "Cantidad de capturas en categoria $(basename "$d"): $(find "$d" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) 2>/dev/null | wc -l)"
   fi
  done
  echo "Info sensible excluida: nombres de juegos, IP, hostname, dispositivos USB, claves, configuraciones."
