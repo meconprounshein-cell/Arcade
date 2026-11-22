@@ -79,22 +79,34 @@ for name in sorted(names):
     ET.parse(str(d/'theme.xml'))
 if p.exists(): shutil.rmtree(str(p))
 staging.rename(p)
-# Guardar el tema anterior para poder volver atras (conservando formato de settings).
+# Activacion segura: nunca reescribir ajustes XML defectuosos.
+# EmulationStation permite elegir ThemeSet desde UI si hace falta.
 if settings.is_file():
-    data=settings.read_text(encoding='utf-8')
-    pat=r'(<string\s+name="ThemeSet"\s+value=")[^"]*("\s*/>)'
-    if re.search(pat,data):
-        data=re.sub(pat,lambda m:m.group(1)+'retrovanta'+m.group(2),data,count=1)
-    elif '</config>' in data:
-        data=data.replace('</config>','    <string name="ThemeSet" value="retrovanta" />\n</config>',1)
+    original=settings.read_text(encoding='utf-8')
+    try:
+        ET.fromstring(original)
+    except ET.ParseError as exc:
+        print('AVISO: es_settings.cfg tiene XML no valido:',exc)
+        print('No se modificaron ajustes. Elegi RetroVanta en START > UI SETTINGS > THEME SET.')
     else:
-        raise RuntimeError('No se reconoce es_settings.cfg; tema instalado pero no activado.')
+        pat=r'(<string\\s+name="ThemeSet"\\s+value=")[^"]*("\\s*/>)'
+        if re.search(pat,original):
+            updated=re.sub(pat,lambda m:m.group(1)+'retrovanta'+m.group(2),original,count=1)
+        elif '</config>' in original:
+            updated=original.replace('</config>','    <string name="ThemeSet" value="retrovanta" />\\n</config>',1)
+        else:
+            updated=original
+        try:
+            ET.fromstring(updated)
+        except ET.ParseError:
+            print('AVISO: no se pudieron validar los ajustes; selecciona el tema manualmente.')
+        else:
+            settings.write_text(updated,encoding='utf-8')
+            print('Tema activado desde es_settings.cfg.')
 else:
-    data='<?xml version="1.0"?>\n<config>\n<string name="ThemeSet" value="retrovanta" />\n</config>\n'
-ET.fromstring(data)
-settings.write_text(data,encoding='utf-8')
-(backup/'README.txt').write_text('Tema anterior respaldado. Para volver atras: bash Arcade/scripts/menu-restaurar.sh\n',encoding='utf-8')
-print('Tema instalado y seleccionado:',p)
+    print('No se encontró archivo de ajustes. Selecciona RetroVanta manualmente en UI SETTINGS.')
+(backup/'README.txt').write_text('Tema anterior respaldado. Para volver atras: bash Arcade/scripts/menu-restaurar.sh\\n',encoding='utf-8')
+print('Tema RetroVanta instalado:',p)
 print('Sistemas con tema:',len(names))
 print('No se modificaron controles, ROMs ni emuladores.')
 PY
