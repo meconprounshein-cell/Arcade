@@ -47,10 +47,11 @@ xml='''<theme>
  <view name="system">
   <image name="background"><pos>0 0</pos><size>1 1</size><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path></image>
   <image name="rv_crt" extra="true"><pos>0 0</pos><size>1 1</size><origin>0 0</origin><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path><zIndex>1</zIndex></image>
+  <text name="logoText"><color>FFFFFF</color><fontSize>0.065</fontSize><forceUppercase>1</forceUppercase></text>
   <carousel name="systemcarousel">
    <type>horizontal</type><pos>0.14 0.28</pos><size>0.72 0.18</size>
    <logoSize>0.22 0.14</logoSize><logoScale>1.15</logoScale>
-   <maxLogoCount>3</maxLogoCount><color>121C3000</color>
+   <maxLogoCount>5</maxLogoCount><color>121C3000</color>
   </carousel>
   <text name="systemInfo">
    <pos>0.21 0.78</pos><size>0.60 0.04</size>
