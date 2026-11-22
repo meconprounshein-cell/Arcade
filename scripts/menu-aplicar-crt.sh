@@ -29,6 +29,9 @@ staging=dest.parent/'retrovanta-crt-temporal'
 if staging.exists(): shutil.rmtree(str(staging))
 staging.mkdir(parents=True)
 shutil.copyfile(str(source),str(staging/'fondo.png'))
+with (staging/'fondo.png').open('rb') as fp:
+    if fp.read(8) != bytes([137,80,78,71,13,10,26,10]):
+        raise RuntimeError('La imagen no es un archivo PNG valido')
 names=set('arcade fba mame-libretro mame-mame4all megadrive snes nes neogeo mastersystem fds psx ngp ngpc retropie'.split())
 for candidate in [Path.home()/'.emulationstation/es_systems.cfg',Path('/etc/emulationstation/es_systems.cfg'),Path('/opt/retropie/configs/all/emulationstation/es_systems.cfg')]:
     if candidate.is_file():
@@ -42,11 +45,12 @@ for candidate in [Path.home()/'.emulationstation/es_systems.cfg',Path('/etc/emul
 xml='''<theme>
  <formatVersion>3</formatVersion>
  <view name="system">
-  <image name="background"><path>../fondo.png</path></image>
+  <image name="background"><pos>0 0</pos><size>1 1</size><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path></image>
+  <image name="rv_crt" extra="true"><pos>0 0</pos><size>1 1</size><origin>0 0</origin><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path><zIndex>1</zIndex></image>
   <carousel name="systemcarousel">
-   <type>horizontal</type><pos>0.155 0.258</pos><size>0.64 0.155</size>
-   <logoSize>0.16 0.11</logoSize><logoScale>1.1</logoScale>
-   <maxLogoCount>5</maxLogoCount><color>121C30DD</color>
+   <type>horizontal</type><pos>0.14 0.28</pos><size>0.72 0.18</size>
+   <logoSize>0.22 0.14</logoSize><logoScale>1.15</logoScale>
+   <maxLogoCount>3</maxLogoCount><color>121C3000</color>
   </carousel>
   <text name="systemInfo">
    <pos>0.21 0.78</pos><size>0.60 0.04</size>
@@ -58,7 +62,8 @@ xml='''<theme>
   </helpsystem>
  </view>
  <view name="basic, detailed">
-  <image name="background"><path>../fondo.png</path></image>
+  <image name="background"><pos>0 0</pos><size>1 1</size><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path></image>
+  <image name="rv_crt" extra="true"><pos>0 0</pos><size>1 1</size><origin>0 0</origin><path>/home/pi/.emulationstation/themes/retrovanta/fondo.png</path><zIndex>1</zIndex></image>
   <textlist name="gamelist">
    <pos>0.17 0.425</pos><size>0.235 0.315</size>
    <primaryColor>FFFFFF</primaryColor><secondaryColor>A6B5CC</secondaryColor>
