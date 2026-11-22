@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# RetroVanta Theme v0.1 para EmulationStation / RetroPie
+# RetroVanta Theme v0.2 para EmulationStation / RetroPie
 # Instalacion reversible. NO toca ROMs, mandos, emuladores ni arranque.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -54,7 +54,28 @@ staging.mkdir(parents=True)
 xml='''<theme>
  <formatVersion>3</formatVersion>
  <view name="system">
-  <image name="rv_background" extra="true"><pos>0 0</pos><size>1 1</size><path>../background.svg</path></image>
+  <image name="background"><path>../background.svg</path></image>
+  <carousel name="systemcarousel">
+    <type>horizontal</type>
+    <pos>0.075 0.34</pos>
+    <size>0.85 0.27</size>
+    <logoSize>0.27 0.18</logoSize>
+    <logoScale>1.2</logoScale>
+    <maxLogoCount>3</maxLogoCount>
+    <color>172331F0</color>
+  </carousel>
+  <text name="systemInfo">
+    <pos>0.31 0.67</pos>
+    <size>0.38 0.06</size>
+    <alignment>center</alignment>
+    <color>81D3C5</color>
+    <fontSize>0.025</fontSize>
+  </text>
+  <helpsystem name="help">
+    <pos>0.08 0.88</pos>
+    <textColor>E9D4A6</textColor>
+    <iconColor>81D3C5</iconColor>
+  </helpsystem>
  </view>
  <view name="basic, detailed">
   <image name="background"><path>../background.svg</path></image>
