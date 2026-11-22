@@ -6,7 +6,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 if [ ! -d .git ]; then echo "ERROR: abre el clon Git de Arcade."; exit 1; fi
-if [ "$(git branch --show-current)" != "main" ]; then echo "ERROR: usa la rama main."; exit 1; fi
+if [ "$(git symbolic-ref --quiet --short HEAD)" != "main" ]; then echo "ERROR: usa la rama main."; exit 1; fi
 if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "ERROR: hay modificaciones locales. No se publicara nada para evitar mezclarlas."
   exit 1
