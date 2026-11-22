@@ -94,7 +94,7 @@ for folder in sorted(p for p in rombase.iterdir() if p.is_dir()):
         root=tree.getroot()
         for node in root.findall('game'):
             raw=node.findtext('path') or ''
-            p=(target.parent / raw).resolve() if raw else None
+            p=(folder / raw).resolve() if raw else None
             if p and p.is_file():
                 entries.append((p,node))
         # En caso de lista existente, no agregar juegos nuevos: solo fotos.
@@ -103,7 +103,7 @@ for folder in sorted(p for p in rombase.iterdir() if p.is_dir()):
         if node is not None:
             previous=node.findtext('image') or ''
             if previous:
-                resolved=(target.parent/previous).resolve()
+                resolved=(folder/previous).resolve()
                 if resolved.is_file():continue
         ks=variants(game.name)
         if node is not None:
