@@ -89,11 +89,11 @@ if settings.is_file():
         print('AVISO: es_settings.cfg tiene XML no valido:',exc)
         print('No se modificaron ajustes. Elegi RetroVanta en START > UI SETTINGS > THEME SET.')
     else:
-        pat=r'(<string\\s+name="ThemeSet"\\s+value=")[^"]*("\\s*/>)'
+        pat=r'(<string\s+name="ThemeSet"\s+value=")[^"]*("\s*/>)'
         if re.search(pat,original):
             updated=re.sub(pat,lambda m:m.group(1)+'retrovanta'+m.group(2),original,count=1)
         elif '</config>' in original:
-            updated=original.replace('</config>','    <string name="ThemeSet" value="retrovanta" />\\n</config>',1)
+            updated=original.replace('</config>','    <string name="ThemeSet" value="retrovanta" />\n</config>',1)
         else:
             updated=original
         try:
@@ -105,7 +105,7 @@ if settings.is_file():
             print('Tema activado desde es_settings.cfg.')
 else:
     print('No se encontró archivo de ajustes. Selecciona RetroVanta manualmente en UI SETTINGS.')
-(backup/'README.txt').write_text('Tema anterior respaldado. Para volver atras: bash Arcade/scripts/menu-restaurar.sh\\n',encoding='utf-8')
+(backup/'README.txt').write_text('Tema anterior respaldado. Para volver atras: bash Arcade/scripts/menu-restaurar.sh\n',encoding='utf-8')
 print('Tema RetroVanta instalado:',p)
 print('Sistemas con tema:',len(names))
 print('No se modificaron controles, ROMs ni emuladores.')
