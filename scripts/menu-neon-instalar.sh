@@ -10,7 +10,7 @@ if pgrep -x emulationstation >/dev/null 2>&1; then
 fi
 if [ ! -s "$ZIP" ]; then
  echo "FALTA: $ZIP"
- echo "Copia retrovanta-selector-neon.zip a la carpeta roms desde el celular."
+ echo "Copia retrovanta-selector-neon-6-consolas.zip a la carpeta roms desde el celular."
  exit 1
 fi
 if [ ! -d "$ROOT" ]; then
@@ -35,6 +35,7 @@ systems={
  'snes':'snes',
  'nes':'nes',
  'neogeo':'neogeo',
+ 'mastersystem':'mastersystem',
  'mastersystem':'mastersystem',
 }
 with zipfile.ZipFile(archive) as z:
