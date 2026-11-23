@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # RetroVanta: seis identidades originales de consola en el carrusel CRT
-# Instalacion reversible, no modifica ROMs ni controles.
+# Solo actualiza el tema. No crea copias de seguridad ni modifica ROMs o controles.
 set -euo pipefail
 THEME="$HOME/.emulationstation/themes/retrovanta"
 if pgrep -x emulationstation >/dev/null 2>&1; then
@@ -12,9 +12,6 @@ if [ ! -s "$THEME/fondo.png" ]; then
  echo "Instala primero menu-aplicar-crt.sh"
  exit 1
 fi
-BACK="$HOME/retrovanta-backups/seis-sistemas-$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$BACK"
-cp -a "$THEME" "$BACK/tema-anterior"
 export RV_DIR="$THEME"
 python3 - <<'PY'
 from pathlib import Path
@@ -168,5 +165,5 @@ for system,(label,accent,kind) in systems.items():
 print('Seis familias graficas instaladas; alias arcade comparten identidad.')
 print('No se tocaron las ROMs, los controles ni la lista de sistemas.')
 PY
-echo "INSTALADO. Respaldo: $BACK"
+echo "INSTALADO. Tema RetroVanta actualizado sin crear respaldo."
 echo "Inicia EmulationStation; la calesita mostrara una consola a la vez."
