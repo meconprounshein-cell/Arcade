@@ -112,6 +112,9 @@ echo "Imagen: $RAW"
 echo "---"
 } > "$REPORT"
 cd "$SRC"
+# PiFBA no crea automaticamente la carpeta de objetos.
+mkdir -p "$SRC/.obj"
+echo "Carpeta de compilacion: $SRC/.obj" >> "$REPORT"
 if make -j1 CC=gcc CXX=g++ >> "$REPORT" 2>&1; then
   echo "COMPILACION FINALIZADA" | tee -a "$REPORT"
   find "$SRC" -maxdepth 3 -type f -name 'fba2x' -exec ls -lh {} \; | tee -a "$REPORT"
