@@ -3,7 +3,7 @@
 # No modifica juegos, controles ni emuladores; no crea respaldos.
 set -euo pipefail
 ROOT="$HOME/.emulationstation/themes/retrovanta"
-ZIP="$HOME/RetroPie/roms/retrovanta-selector-neon.zip"
+ZIP="$HOME/RetroPie/roms/retrovanta-selector-neon-6-consolas.zip"
 if pgrep -x emulationstation >/dev/null 2>&1; then
  echo "Cerra EmulationStation antes de instalar el tema."
  exit 1
@@ -35,6 +35,7 @@ systems={
  'snes':'snes',
  'nes':'nes',
  'neogeo':'neogeo',
+ 'mastersystem':'mastersystem',
 }
 with zipfile.ZipFile(archive) as z:
  for sys,base in systems.items():
@@ -67,5 +68,5 @@ with zipfile.ZipFile(archive) as z:
    tree.write(str(xml),encoding='utf-8',xml_declaration=True)
   print('INSTALADO:',sys, '-' if modified else '(sin vista de sistema)')
 print('LISTO. Reinicia EmulationStation para ver los carteles.')
-print('Master System conserva su ilustracion anterior.')
+print('Master System incluido en los seis diseños.')
 PY
