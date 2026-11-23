@@ -17,7 +17,7 @@ localbase = home/'.emulationstation'/'gamelists'
 stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
 backup = home/'retrovanta-backups'/('capturas-'+stamp)
 image_ext = {'.png','.jpg','.jpeg','.webp'}
-nonrom_ext = image_ext | {'.xml','.txt','.nfo','.md','.pdf','.sh','.cfg','.ini','.sav','.srm','.state'}
+nonrom_ext = image_ext | {'.xml','.txt','.nfo','.pdf','.sh','.cfg','.ini','.sav','.srm','.state'}
 def key(s):
     s=unicodedata.normalize('NFKD',s).encode('ascii','ignore').decode().lower()
     return re.sub('[^a-z0-9]','',s)
@@ -140,5 +140,33 @@ if total==0:
     print('No hubo coincidencias seguras de nombres. Necesitamos revisar estructura de imagenes y gamelists.')
 else:
     print('LISTO. En EmulationStation: UI SETTINGS > GAMELIST VIEW STYLE > DETAILED.')
+# El tema CRT usaba una capa de fondo en zIndex 1, capaz de tapar capturas.
+# Levantar la vista detallada sin rehacer logos ni ilustraciones.
+theme=home/'.emulationstation'/'themes'/'retrovanta'
+adjusted=0
+for xmlfile in theme.glob('*/theme.xml') if theme.is_dir() else []:
+    try:
+        t=ET.parse(str(xmlfile))
+        modified=False
+        for view in t.getroot().findall('view'):
+            names={v.strip() for v in (view.get('name') or '').split(',')}
+            if 'detailed' in names:
+                image=view.find("./image[@name='md_image']")
+                if image is not None:
+                    z=image.find('zIndex')
+                    if z is None: z=ET.SubElement(image,'zIndex')
+                    if z.text!='6': z.text='6'; modified=True
+            if 'basic' in names or 'detailed' in names:
+                lst=view.find("./textlist[@name='gamelist']")
+                if lst is not None:
+                    z=lst.find('zIndex')
+                    if z is None: z=ET.SubElement(lst,'zIndex')
+                    if z.text!='6': z.text='6'; modified=True
+        if modified:
+            t.write(str(xmlfile),encoding='utf-8',xml_declaration=True)
+            adjusted+=1
+    except ET.ParseError:
+        print('TEMA: XML invalido',xmlfile)
+print('Tema CRT: vistas corregidas:',adjusted)
 print('Las ROMs, los controles y los emuladores no se modificaron.')
 PY
