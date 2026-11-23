@@ -111,8 +111,43 @@ def art(kind,accent):
               rect(397,477,21,37,"#0a0f19"),rect(388,490,40,13,"#0a0f19"),
               circle(555,491,13,"#df494d"),circle(583,491,13,"#df494d")]
     return ''.join(a)
+# Fuente pixel propia: se dibuja con rectangulos, compatible con NanoSVG antiguo.
+FONT={
+'A':["01110","10001","10001","11111","10001","10001","10001"],
+'B':["11110","10001","10001","11110","10001","10001","11110"],
+'C':["01111","10000","10000","10000","10000","10000","01111"],
+'D':["11110","10001","10001","10001","10001","10001","11110"],
+'E':["11111","10000","10000","11110","10000","10000","11111"],
+'G':["01111","10000","10000","10111","10001","10001","01111"],
+'I':["11111","00100","00100","00100","00100","00100","11111"],
+'M':["10001","11011","10101","10101","10001","10001","10001"],
+'N':["10001","11001","10101","10011","10001","10001","10001"],
+'O':["01110","10001","10001","10001","10001","10001","01110"],
+'R':["11110","10001","10001","11110","10100","10010","10001"],
+'S':["01111","10000","10000","01110","00001","00001","11110"],
+'T':["11111","00100","00100","00100","00100","00100","00100"],
+'U':["10001","10001","10001","10001","10001","10001","01110"],
+'V':["10001","10001","10001","10001","10001","01010","00100"],
+' ':["00000"]*7,
+}
+def pixel_label(label,accent):
+    # Centrado en el panel que ya dibuja la ilustracion; no requiere fuentes instaladas.
+    cell=7 if len(label)>12 else 9
+    advance=6*cell
+    total=len(label)*advance-cell
+    x0=(1000-total)/2
+    y0=48
+    shapes=[rect(114,28,772,95,"#060d20",16,accent,4)]
+    for n,ch in enumerate(label):
+        pattern=FONT.get(ch,FONT[' '])
+        for row,bits in enumerate(pattern):
+            for col,bit in enumerate(bits):
+                if bit=='1':
+                    shapes.append(rect(round(x0+n*advance+col*cell,1),
+                                       y0+row*cell,cell-1,cell-1,accent,1))
+    return ''.join(shapes)
 def svg_body(s,accent,kind):
-    elements=art(kind,accent)
+    elements=art(kind,accent)+pixel_label(s,accent)
     return ('<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">'
            +elements+'</svg>')
 def logo_svg(title,accent):
